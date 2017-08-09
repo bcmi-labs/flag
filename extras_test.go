@@ -10,7 +10,7 @@ import (
 	"testing"
 	"time"
 
-	. "github.com/namsral/flag"
+	. "github.com/bcmi-labs/flag"
 )
 
 // Test parsing a environment variables
@@ -85,6 +85,7 @@ func TestParseFile(t *testing.T) {
 	stringFlag := f.String("string", "0", "string value")
 	float64Flag := f.Float64("float64", 0, "float64 value")
 	durationFlag := f.Duration("duration", 5*time.Second, "time.Duration value")
+	stripFlag := f.String("strip", "", "string value stripped of quotes")
 
 	err := f.ParseFile("./testdata/test.conf")
 	if err != nil {
@@ -117,6 +118,9 @@ func TestParseFile(t *testing.T) {
 	if *durationFlag != 2*time.Minute {
 		t.Error("duration flag should be 2m, is ", *durationFlag)
 	}
+	if *stripFlag != "hello" {
+		t.Error("strip flag should be hello, is ", *stripFlag)
+	}
 }
 
 func TestParseFileUnknownFlag(t *testing.T) {
@@ -140,6 +144,7 @@ func TestDefaultConfigFlagname(t *testing.T) {
 	f.Duration("duration", 5*time.Second, "time.Duration value")
 
 	f.String(DefaultConfigFlagname, "./testdata/test.conf", "config path")
+	f.String("strip", "", "string value stripped of quotes")
 
 	if err := os.Unsetenv("STRING"); err != nil {
 		t.Error(err)

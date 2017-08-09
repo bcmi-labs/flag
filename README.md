@@ -1,6 +1,10 @@
 Flag
 ===
 
+Differences from the original:
+
+- The configuration file strips quotes when present
+
 Flag is a drop in replacement for Go's flag package with the addition to parse files and environment variables. If you support the [twelve-factor app methodology][], Flag complies with the third factor; "Store config in the environment".
 
 [twelve-factor app methodology]: http://12factor.net
@@ -13,9 +17,9 @@ $ cat > gopher.go
 
     import (
         "fmt"
-    	"github.com/namsral/flag"
+    	"github.com/bcmi-labs/flag"
 	)
-    
+
     func main() {
     	var age int
 	flag.IntVar(&age, "age", 0, "age of gopher")
@@ -33,7 +37,7 @@ $ export AGE=2
 $ go run gopher.go
 age: 2
 ```
-    
+
 
 Same code but using a configuration file:
 
@@ -49,10 +53,10 @@ The following table shows how flags are translated to environment variables and 
 
 | Type   | Flag          | Environment  | File         |
 | ------ | :------------ |:------------ |:------------ |
-| int    | -age 2        | AGE=2        | age 2        |
-| bool   | -female       | FEMALE=true  | female true  |
-| float  | -length 175.5 | LENGTH=175.5 | length 175.5 |
-| string | -name Gloria  | NAME=Gloria  | name Gloria  |
+| int    | -age 2        | AGE=2        | age=2        |
+| bool   | -female       | female=true  | female=true  |
+| float  | -length 175.5 | length=175.5 | length=175.5 |
+| string | -name Gloria  | name=Gloria  | name="Gloria"  |
 
 This package is a port of Go's [flag][] package from the standard library with the addition of two functions `ParseEnv` and `ParseFile`.
 
@@ -83,7 +87,7 @@ It's intended for projects which require a simple configuration made available t
 Example:
 
 ```go
-import "github.com/namsral/flag"
+import "github.com/bcmi-labs/flag"
 
 flag.String(flag.DefaultConfigFlagname, "", "path to config file")
 flag.Int("age", 24, "help message for age")
@@ -161,7 +165,7 @@ age=33
 
 For more examples see the [examples][] directory in the project repository.
 
-[examples]: https://github.com/namsral/flag/tree/master/examples
+[examples]: https://github.com/bcmi-labs/flag/tree/master/examples
 
 That's it.
 

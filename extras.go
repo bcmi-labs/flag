@@ -140,6 +140,8 @@ func (f *FlagSet) ParseFile(path string) error {
 			name = line
 		}
 
+		value = strings.Trim(value, `"`)
+
 		// Ignore flag when already set; arguments have precedence over file
 		if f.actual[name] != nil {
 			continue
